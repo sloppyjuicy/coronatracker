@@ -24,7 +24,6 @@ export const Header = (props: HeaderProps) => {
 
     const data = await props.getData(url);
     props.setCountryInfo(data);
-    console.log(props.countryInfo);
   };
   return (
     <div className='header'>
