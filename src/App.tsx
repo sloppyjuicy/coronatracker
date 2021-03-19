@@ -60,7 +60,7 @@ function App() {
       <div className='right'>
         <Card>
           <CardContent>
-            <h3>Live Cases by Country</h3>
+            <h3>Total Cases by Country</h3>
             <Table countries={tableData} />
 
             <h3>Worldwide new cases</h3>
