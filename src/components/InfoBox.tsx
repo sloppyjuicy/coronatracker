@@ -15,7 +15,7 @@ export const InfoBox = (props: InfoProps) => {
           <Typography className='title' color='textSecondary'>
             {props.title}
           </Typography>
-          <h2 className='cases'>{props.cases}</h2>
+          <h2 className='cases'>+{props.cases}</h2>
           <Typography className='total' color='textSecondary'>
             {props.total} Total
           </Typography>

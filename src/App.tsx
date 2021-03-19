@@ -1,9 +1,11 @@
 import React from 'react';
-import { Header, InfoBox, Map } from './components';
+import { Header, InfoBox, Map, Table } from './components';
 import { Country, CountryData } from './types';
 import { getCountryData, getData } from './data';
 import './App.css';
 import { Card, CardContent } from '@material-ui/core';
+import { table as dData } from './data/defaultTable';
+import { sortData } from './utils';
 
 function App() {
   const [countries, setCountries] = React.useState<Country[] | undefined>([]);
@@ -11,10 +13,18 @@ function App() {
   const [countryInfo, setCountryInfo] = React.useState<
     CountryData | undefined
   >();
+  const [tableData, setTableData] = React.useState<CountryData[]>([dData]);
 
-  // fetching data
   React.useEffect(() => {
-    getCountryData(setCountries);
+    const getAll = async () => {
+      const data = await getData('https://disease.sh/v3/covid-19/all');
+      const tableD = await getData('https://disease.sh/v3/covid-19/countries');
+      const sortedDataD = sortData(tableD);
+      setCountryInfo(data);
+      setTableData(sortedDataD);
+      getCountryData(setCountries);
+    };
+    getAll();
   }, []);
 
   return (
@@ -29,7 +39,6 @@ function App() {
           getData={getData}
         />
         <div className='infoboxes'>
-          {console.log(countryInfo)}
           <InfoBox
             title='Coronavirus cases'
             total={countryInfo?.cases}
@@ -52,6 +61,8 @@ function App() {
         <Card>
           <CardContent>
             <h3>Live Cases by Country</h3>
+            <Table countries={tableData} />
+
             <h3>Worldwide new cases</h3>
           </CardContent>
         </Card>
