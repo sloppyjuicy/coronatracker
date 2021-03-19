@@ -7,6 +7,16 @@ body {
   background-color: #f5f6fa;
 }
 
+.app {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px;
+}
+
+.left {
+  flex: 0.9;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -17,4 +27,10 @@ body {
 .infoboxes {
   display: flex;
   justify-content: space-between;
+}
+
+@media (max-width: 990px) {
+  .app {
+    flex-direction: column;
+  }
 }

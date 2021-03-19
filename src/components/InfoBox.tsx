@@ -3,8 +3,8 @@ import React from 'react';
 
 type InfoProps = {
   title: string;
-  cases: number;
-  total: number;
+  cases?: number;
+  total?: number;
 };
 
 export const InfoBox = (props: InfoProps) => {

@@ -1,17 +1,30 @@
 import React from 'react';
 import { FormControl, Select, MenuItem } from '@material-ui/core';
-import { Country } from './../types';
+import { Country, CountryData } from './../types';
 
 type HeaderProps = {
   countries: Country[] | undefined;
   country: string;
   setCountry: Function;
+  countryInfo: CountryData | undefined;
+  setCountryInfo: Function;
+  getData: Function;
 };
 
 export const Header = (props: HeaderProps) => {
   const onCountryChange = async (e: any) => {
     const countryCode = e.target.value;
     props.setCountry(countryCode);
+
+    // Call the api
+    const url =
+      countryCode === 'worldwide'
+        ? 'https://disease.sh/v3/covid-19/all'
+        : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
+
+    const data = await props.getData(url);
+    props.setCountryInfo(data);
+    console.log(props.countryInfo);
   };
   return (
     <div className='header'>
