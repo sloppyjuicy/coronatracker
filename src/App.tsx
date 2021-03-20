@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, InfoBox, Map, Table } from './components';
+import { Header, InfoBox, LineGraph, Map, Table } from './components';
 import { Country, CountryData } from './types';
 import { getCountryData, getData } from './data';
 import './App.css';
@@ -62,8 +62,8 @@ function App() {
           <CardContent>
             <h3>Total Cases by Country</h3>
             <Table countries={tableData} />
-
             <h3>Worldwide new cases</h3>
+            <LineGraph type='cases' />
           </CardContent>
         </Card>
       </div>

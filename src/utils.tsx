@@ -1,13 +1,24 @@
+import { Historical } from './types';
+
 export const sortData = (data: any) => {
-  const sortedData = [...data];
+  return [...data].sort((a, b) => (a.cases > b.cases ? -1 : 1));
+};
 
-  sortedData.sort((a, b) => {
-    if (a.cases > b.cases) {
-      return -1;
-    } else {
-      return 1;
+export const buildChartData = (
+  data: Historical,
+  casesType: 'cases' | 'deaths' | 'recovered'
+) => {
+  let chartData = [];
+  let lastDataPoint;
+  for (let date in data.cases) {
+    if (lastDataPoint) {
+      let newDataPoint = {
+        x: date,
+        y: data[casesType][date] - lastDataPoint,
+      };
+      chartData.push(newDataPoint);
     }
-  });
-
-  return sortedData;
+    lastDataPoint = data[casesType][date];
+  }
+  return chartData;
 };
