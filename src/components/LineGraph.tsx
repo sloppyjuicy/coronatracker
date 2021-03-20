@@ -1,8 +1,7 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
-import { getData } from '../data';
-import { buildChartData } from '../utils';
 import numeral from 'numeral';
+import { getHistoricalData } from '../data/countries';
 
 type LineGraphProps = {
   type: 'cases' | 'deaths' | 'recovered';
@@ -59,15 +58,11 @@ export const LineGraph = (props: LineGraphProps) => {
   const [data, setData] = React.useState<any[]>();
 
   React.useEffect(() => {
-    const getDa = async () => {
-      const data = await getData(
-        'https://disease.sh/v3/covid-19/historical/all?lastdays=120'
-      );
-      const chartData = buildChartData(data, props.type);
-      setData(chartData);
+    const fetchData = async () => {
+      await getHistoricalData(120, setData, 'cases');
     };
-    getDa();
-  }, [props.type]);
+    fetchData();
+  }, []);
   return (
     <div>
       <Line

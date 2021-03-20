@@ -6,6 +6,7 @@ import './App.css';
 import { Card, CardContent } from '@material-ui/core';
 import { table as dData } from './data/defaultTable';
 import { sortData } from './utils';
+import { getCountryInfo } from './data/countries';
 
 function App() {
   const [countries, setCountries] = React.useState<Country[] | undefined>([]);
@@ -27,16 +28,19 @@ function App() {
     getAll();
   }, []);
 
+  const onCountryChange = async (e: any) => {
+    const code = e.target.value;
+    setCountry(code);
+    getCountryInfo(code, setCountryInfo);
+  };
+
   return (
     <div className='app'>
       <div className='left'>
         <Header
           countries={countries}
           country={country}
-          setCountry={setCountry}
-          countryInfo={countryInfo}
-          setCountryInfo={setCountryInfo}
-          getData={getData}
+          onCountryChange={onCountryChange}
         />
         <div className='infoboxes'>
           <InfoBox
