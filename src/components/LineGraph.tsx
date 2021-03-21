@@ -61,13 +61,13 @@ export const LineGraph = (props: LineGraphProps) => {
   React.useEffect(() => {
     const fetchData = async () => {
       const data = await getHistoricalData(120);
-      const chartData = buildChartData(data, 'cases');
+      const chartData = buildChartData(data, props.type);
       setData(chartData);
     };
     fetchData();
-  }, []);
+  }, [props.type]);
   return (
-    <div>
+    <div className='graph'>
       <Line
         data={{
           datasets: [

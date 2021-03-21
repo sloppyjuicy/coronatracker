@@ -5,7 +5,19 @@ export const getCountryInfo = async (code: string) => {
     code === 'worldwide'
       ? 'https://disease.sh/v3/covid-19/all'
       : `https://disease.sh/v3/covid-19/countries/${code}`;
-  return await getData(url);
+
+  const data = await getData(url);
+  if (code === 'worldwide') {
+    return {
+      ...data,
+      countryInfo: {
+        lat: 34.80746,
+        long: -40.4796,
+      },
+    };
+  } else {
+    return data;
+  }
 };
 
 export const getHistoricalData = async (days: number) => {

@@ -25,20 +25,14 @@ export const buildChartData = (data: Historical, casesType: CaseTypes) => {
 const casesTypeColors = {
   cases: {
     hex: '#CC1034',
-    rgb: 'rgb(204, 16, 52)',
-    half_op: 'rgba(204, 16, 52, 0.5)',
     multiplier: 500,
   },
   recovered: {
     hex: '#7dd71d',
-    rgb: 'rgb(125, 215, 29)',
-    half_op: 'rgba(125, 215, 29, 0.5)',
-    multiplier: 900,
+    multiplier: 500,
   },
   deaths: {
     hex: '#fb4443',
-    rgb: 'rgb(251, 68, 67)',
-    half_op: 'rgba(251, 68, 67, 0.5)',
     multiplier: 1700,
   },
 };
@@ -48,8 +42,10 @@ export const showDataOnMap = (data: CountryData[], type: CaseTypes) =>
     <Circle
       center={[country.countryInfo.lat, country.countryInfo.long]}
       fillOpacity={0.4}
-      color={casesTypeColors[type].hex}
-      fillColor={casesTypeColors[type].hex}
+      pathOptions={{
+        color: casesTypeColors[type].hex,
+        fillColor: casesTypeColors[type].hex,
+      }}
       radius={Math.sqrt(country[type]) * casesTypeColors[type].multiplier}
     >
       <Popup>
@@ -72,3 +68,7 @@ export const showDataOnMap = (data: CountryData[], type: CaseTypes) =>
       </Popup>
     </Circle>
   ));
+
+export const prettyPrintStat = (stat: number) => {
+  return stat ? numeral(stat).format('0.0a') : '0';
+};
