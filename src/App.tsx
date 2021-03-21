@@ -9,8 +9,13 @@ import { sortData } from './utils';
 import { getCountryInfo } from './data/countries';
 
 function App() {
+  const [mapCenter, setMapCenter] = React.useState<any[]>([34.80746, -40.4796]);
+  const [mapZoom, setMapZoom] = React.useState<number>(3);
   const [countries, setCountries] = React.useState<Country[] | undefined>([]);
-  const [country, setCountry] = React.useState('worldwide');
+  const [mapCountries, setMapCountries] = React.useState<
+    CountryData[] | undefined
+  >([]);
+  const [country, setCountry] = React.useState<string>('worldwide');
   const [countryInfo, setCountryInfo] = React.useState<
     CountryData | undefined
   >();
@@ -23,6 +28,7 @@ function App() {
       const sortedDataD = sortData(tableD);
       setCountryInfo(data);
       setTableData(sortedDataD);
+      setMapCountries(tableD);
       getCountryData(setCountries);
     };
     getAll();
@@ -31,7 +37,9 @@ function App() {
   const onCountryChange = async (e: any) => {
     const code = e.target.value;
     setCountry(code);
-    getCountryInfo(code, setCountryInfo);
+    const data: CountryData = await getCountryInfo(code);
+    setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+    setMapZoom(4);
   };
 
   return (
@@ -59,7 +67,12 @@ function App() {
             cases={countryInfo?.todayDeaths}
           />
         </div>
-        <Map />
+        <Map
+          countries={mapCountries}
+          center={mapCenter}
+          zoom={mapZoom}
+          type='cases'
+        />
       </div>
       <div className='right'>
         <Card>

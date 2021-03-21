@@ -47,3 +47,5 @@ export type Historical = {
     [key: string]: number;
   };
 };
+
+export type CaseTypes = 'cases' | 'deaths' | 'recovered';
