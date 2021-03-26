@@ -6,12 +6,15 @@ type HeaderProps = {
   countries: Country[] | undefined;
   country: string;
   onCountryChange: any;
+  lastUpdate: any;
 };
 
 export const Header = (props: HeaderProps) => {
   return (
     <div className='header'>
       <h1>COVID-19 Tracker</h1>
+
+      <h5 className='lastupdate'>Last update: {props.lastUpdate}</h5>
 
       <FormControl className='dropdown'>
         <Select

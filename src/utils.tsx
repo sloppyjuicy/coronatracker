@@ -1,6 +1,7 @@
 import { CountryData, Historical, CaseTypes } from './types';
 import { Circle, Popup } from 'react-leaflet';
 import numeral from 'numeral';
+import moment from 'moment';
 
 export const sortData = (data: CountryData[]) => {
   return data.sort((a, b) => (a.cases > b.cases ? -1 : 1));
@@ -71,4 +72,10 @@ export const showDataOnMap = (data: CountryData[], type: CaseTypes) =>
 
 export const prettyPrintStat = (stat: number) => {
   return stat ? numeral(stat).format('0.0a') : '0';
+};
+
+export const convertUnixToDate = (unix: number | undefined) => {
+  if (unix) {
+    return moment(unix).fromNow();
+  }
 };

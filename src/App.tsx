@@ -5,7 +5,7 @@ import { getCountryData, getData } from './data';
 import './App.css';
 import { Card, CardContent } from '@material-ui/core';
 import { table as dData } from './data/defaultTable';
-import { sortData } from './utils';
+import { convertUnixToDate, sortData } from './utils';
 import { getCountryInfo } from './data/countries';
 
 function App() {
@@ -55,6 +55,7 @@ function App() {
           countries={countries}
           country={country}
           onCountryChange={onCountryChange}
+          lastUpdate={convertUnixToDate(countryInfo?.updated)}
         />
         <div className='infoboxes'>
           <InfoBox
