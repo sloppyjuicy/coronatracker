@@ -41,6 +41,7 @@ const casesTypeColors = {
 export const showDataOnMap = (data: CountryData[], type: CaseTypes) =>
   data.map((country) => (
     <Circle
+      key={country.country}
       center={[country.countryInfo.lat, country.countryInfo.long]}
       fillOpacity={0.4}
       pathOptions={{
