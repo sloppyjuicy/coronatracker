@@ -16,9 +16,15 @@
       "src": "virus512.png",
       "type": "image/png",
       "sizes": "512x512"
+    },
+    {
+      "src": "maskable_icon_x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
-  "start_url": "/coronatracker",
+  "start_url": "/coronatracker/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
