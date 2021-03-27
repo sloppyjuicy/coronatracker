@@ -15,11 +15,7 @@ type MapProps = {
 export const Map = (props: MapProps) => {
   return (
     <div className='map'>
-      <MapContainer
-        center={props.center}
-        zoom={props.zoom}
-        scrollWheelZoom={false}
-      >
+      <MapContainer center={props.center} zoom={props.zoom}>
         <ChangeView center={props.center} zoom={props.zoom} />
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
