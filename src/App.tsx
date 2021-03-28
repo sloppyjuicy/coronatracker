@@ -10,6 +10,7 @@ import { getCountryInfo } from './data/countries';
 import { RouteComponentProps, useHistory } from 'react-router';
 
 function App(props: RouteComponentProps) {
+  const [defaultRun, setDefaultRun] = React.useState<boolean>(false);
   const history = useHistory();
   const [casesType, setCasesType] = React.useState<CaseTypes>('cases');
   const [mapCenter, setMapCenter] = React.useState<any[]>([34.80746, -40.4796]);
@@ -31,13 +32,17 @@ function App(props: RouteComponentProps) {
         'https://disease.sh/v3/covid-19/countries'
       );
       const sortedTableData = sortData(tableData);
+      console.log('Setting all default data');
       setTableData(sortedTableData);
       setMapCountries(tableData);
       getCountryData(setCountries);
       setCountryInfo(allData);
     };
-    getAll();
-  }, []);
+    if (!defaultRun) {
+      getAll();
+    }
+    setDefaultRun(true);
+  }, [defaultRun]);
 
   React.useEffect(() => {
     const params = new URLSearchParams(props.location.search);
@@ -52,6 +57,7 @@ function App(props: RouteComponentProps) {
       // Map data
       const data = await getCountryInfo(country);
       setCountryInfo(data);
+      console.log('Setting country specific data');
       setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
       if (country === 'worldwide') {
         setMapZoom(3);
@@ -59,8 +65,10 @@ function App(props: RouteComponentProps) {
         setMapZoom(4);
       }
     };
-    updateData();
-  }, [country]);
+    if (defaultRun) {
+      updateData();
+    }
+  }, [country, defaultRun]);
 
   React.useEffect(() => {
     const params = new URLSearchParams(props.location.search);
