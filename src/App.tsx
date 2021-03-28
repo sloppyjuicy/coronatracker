@@ -7,8 +7,10 @@ import { Card, CardContent } from '@material-ui/core';
 import { table as dData } from './data/defaultTable';
 import { convertUnixToDate, sortData } from './utils';
 import { getCountryInfo } from './data/countries';
+import { RouteComponentProps, useHistory } from 'react-router';
 
-function App() {
+function App(props: RouteComponentProps) {
+  const history = useHistory();
   const [casesType, setCasesType] = React.useState<CaseTypes>('cases');
   const [mapCenter, setMapCenter] = React.useState<any[]>([34.80746, -40.4796]);
   const [mapZoom, setMapZoom] = React.useState<number>(3);
@@ -24,28 +26,64 @@ function App() {
 
   React.useEffect(() => {
     const getAll = async () => {
-      const data = await getData('https://disease.sh/v3/covid-19/all');
-      const tableD = await getData('https://disease.sh/v3/covid-19/countries');
-      const sortedDataD = sortData(tableD);
-      setCountryInfo(data);
-      setTableData(sortedDataD);
-      setMapCountries(tableD);
+      const allData = await getData('https://disease.sh/v3/covid-19/all');
+      const tableData = await getData(
+        'https://disease.sh/v3/covid-19/countries'
+      );
+      const sortedTableData = sortData(tableData);
+      setTableData(sortedTableData);
+      setMapCountries(tableData);
       getCountryData(setCountries);
+      setCountryInfo(allData);
     };
     getAll();
   }, []);
 
+  React.useEffect(() => {
+    const params = new URLSearchParams(props.location.search);
+    const country = params.get('country');
+    if (country) {
+      setCountry(country);
+    }
+  }, [props.location.search]);
+
+  React.useEffect(() => {
+    const updateData = async () => {
+      // Map data
+      const data = await getCountryInfo(country);
+      setCountryInfo(data);
+      setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+      if (country === 'worldwide') {
+        setMapZoom(3);
+      } else {
+        setMapZoom(4);
+      }
+    };
+    updateData();
+  }, [country]);
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(props.location.search);
+    const countryP = params.get('country');
+
+    if (country && !countryP) {
+      params.append('country', country);
+      history.push({ search: params.toString() });
+    }
+    if (countryP) {
+      setCountry(countryP);
+    }
+
+    console.log(params.toString());
+  }, [country, history, props.location.search]);
+
   const onCountryChange = async (e: any) => {
     const code = e.target.value;
     setCountry(code);
-    const data = await getCountryInfo(code);
-    setCountryInfo(data);
-    setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
-    if (code === 'worldwide') {
-      setMapZoom(3);
-    } else {
-      setMapZoom(4);
-    }
+    const params = new URLSearchParams(props.location.search);
+    params.delete('country');
+    params.append('country', code);
+    history.push({ search: params.toString() });
   };
 
   return (
